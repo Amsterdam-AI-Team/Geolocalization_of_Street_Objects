@@ -6,7 +6,7 @@ In this repository, an approach is implemented to automatically detect and geolo
 
 ---
 
-### Project Folder Structure
+## Project Folder Structure
 
 This project contains six folders, one `README.md`, one `requirements.txt` and one file entitled `main.py`. The Python file ([`main.py`](main.py)) runs the second part of this project to geolocate objects. In this structure we have a `data` folder and an `output` folder to physically separate the inputs and outputs:
 
@@ -34,7 +34,7 @@ Each line in the input CSV file (i.e. output of previous pipeline step) defines 
 
 The output CSV file contains a list of RD-coordinates (X, Y) of identified objects of interests and a score value for each of these. The score is the number of individual views contributing to an object (for each of the discovered objects this value is greater or equal than 2).
 
-The system was evaluated on a [`dataset`](https://api.data.amsterdam.nl/panorama/panoramas/?bbox=109400.00,494450.00,136550.00,474000.00&page=1&srid=28992&tags=mission-2019%2Csurface-land) of 667.690 panoramic images captured in 2019. The estimated location data of bicycle symbols in Amsterdam can be found here: ([`./output/bicycle_symbol_locations_2019.csv`](./output/bicycle_symbol_locations_2019.csv)).
+The system was evaluated on a [`dataset`](https://api.data.amsterdam.nl/panorama/panoramas/?bbox=109400.00,494450.00,136550.00,474000.00&page=1&srid=28992&tags=mission-2019%2Csurface-land) of 667.690 panoramic images captured in 2019. The estimated location data of bicycle symbols in Amsterdam can be found here: ([`./output/bicycle_symbol_locations_2019_RD.csv`](./output/bicycle_symbol_locations_2019_RD.csv)). The respective panoramic images that contain the detected bicycle symbols can be found in the ([`panorama_output`](https://github.com/Amsterdam-AI-Team/Geolocalization/blob/panorama_output/data/faster_r-cnn_output)) branch.
 
 ---
 
@@ -47,13 +47,13 @@ To visualize the viewpoint directions of one panoramic image, use:
 To visualize the viewpoint directions and possible object intersections of multiple panoramic images, use:
 
     usage: visualize_intersections.py [-c] [--csv_file]
-    example: python3 -m examples.visualize_intersections -c "data/faster_r-cnn_output/bicycle_symbols.csv"
+    example: python3 -m examples.visualize_intersections -c "data/faster_r-cnn_output/bicycle_symbols_example.csv"
 
 
 ---
 
 ## Demo 
-The satellite view below shows an estimated location of a bicycle symbol.
+The satellite view shows the estimated location of a bicycle symbol.
 ![](https://github.com/Amsterdam-AI-Team/Geolocalization/blob/master/examples/satellite_zoom.gif)
 
 
