@@ -1,5 +1,6 @@
 """
-Post-processing on the output data of Faster R-CNN 
+Post-processing on the output data of Faster R-CNN to get 
+additional information from the Open Panorama API.
 """
 from src.api_request import get_pano_location
 from src.geometry import pixel_to_viewpoint
@@ -40,7 +41,7 @@ def process_csv(input_file):
             rows_list.append((location[0], location[1], round(viewpoint_to_object, 2)))
 
     output_file = OUTPUT_FOLDER + os.path.basename(input_file)
-    if os.path.isfile(OUTPUT_FILE):
+    if os.path.isfile(output_file):
         print("A file with the specified ouput name already exists.")
 
     # Save the list of float values

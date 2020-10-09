@@ -57,10 +57,16 @@ def main(input_dir, out_dir, im_dir):
                 # "class x y w h"
                 # x, y: the upper-left coordinates of the bounding box
                 # width, height: the dimensions of your bounding box
-                x = anno[1]
-                y = anno[2]
-                w = anno[3] - anno[1]
-                h = anno[4] - anno[2]
+                if anno[1] < 1 and anno[2] < 1 and anno[3] < 1 and anno[4] < 1:
+                    x = (anno[1] - anno[3] / 2) * width
+                    y = (anno[2] - anno[4] / 2) * height
+                    w = anno[3] * width
+                    h = anno[4] * height
+                else: # Not in standard YOLO format
+                    x = anno[1]
+                    y = anno[2]
+                    w = anno[3] - anno[1]
+                    h = anno[4] - anno[2] 
                 
                 cls = anno[0]
 

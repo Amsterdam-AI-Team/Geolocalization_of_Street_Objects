@@ -18,9 +18,11 @@ from math import radians, cos, sin, sqrt
 import numpy as np
 from scipy.cluster.hierarchy import linkage, fcluster
 
+from src.geometry import euclidean_distance
+
 # Input and output CSV files
-INPUT_FILE = "postprocessing_output/bicycle_symbols.csv"
-OUTPUT_FILE = "output/bicycle_symbol_geolocation.csv"
+INPUT_FILE = "data/postprocessing_output/bicycle_symbols_example.csv"
+OUTPUT_FILE = "output/bicycle_symbols_example.csv"
 
 # Preset parameters
 MAX_DST_CAM_OBJECT = 15  # Max distance from camera to objects (in meters)
@@ -32,12 +34,6 @@ DEPTH_WEIGHT = 0.2  # weight alpha in Eq.(4)
 OBJECT_MULTIVIEW = 0.2  # weight beta in  Eq.(4)
 STANDALONE_PRICE = max(1 - DEPTH_WEIGHT - OBJECT_MULTIVIEW,
                       0)  # weight (1-alpha-beta) in Eq. (4)
-
-def euclidean_distance(x_1, y_1, x_2, y_2):
-    """
-    Calculate the Euclidean distance between two vectors
-    """
-    return sqrt(((x_1 - x_2)**2) + ((y_1 - y_2)**2))
 
 def intersection_point(object_1, object_2):
     """
@@ -153,7 +149,7 @@ def read_inputfile():
 
             # Calculating the object locations using
             # camera location + viewpoint_to_object + depth_estimate
-            br1 = radians(viewpoint_to_object)
+            br1 = radians(180 + viewpoint_to_object)
             x_object = x + (depth * sin(br1) * 640 / 256) # depth-based locations
             y_object = y + (depth * cos(br1) * 640 / 256)
             # Normalized locations (at 1m distance from camera)
@@ -163,7 +159,7 @@ def read_inputfile():
             objects_base.append((
                 x_object_norm,
                 y_object_norm,
-                viewpoint_to_object,
+                viewpoint_to_object, # not used
                 depth,
                 x,
                 y,
@@ -225,7 +221,6 @@ def get_all_intersections(objects_base):
 
     return object_dst, intersections
 
-# TODO explain
 def mrf_energy_minimization(object_dst, objects_base):
     """
     The designed MRF model operates on an irregular grid that consists of all of the
@@ -243,7 +238,6 @@ def mrf_energy_minimization(object_dst, objects_base):
         objects_connectivity_viable[i] = \
             np.count_nonzero(object_dst[i, :] > 0)
 
-    # TODO explain
     np.random.seed(int(100000.0 * time.time()) % 1000000000)
     chngcnt = 0
     for i in range(ICM_ITERATIONS * len(objects_base)):
@@ -304,7 +298,7 @@ def clustering(objects_base, objects_connectivity, intersects):
     max_intra_degree_dst = euclidean_distance(ax, ay, objects_base[0][0], objects_base[0][1])
 
     icm_intersect = []
-    for i in range(len(objects_base)): # TODO explain
+    for i in range(len(objects_base)):
         res = avg_object_location(intersects, objects_connectivity, i)
         if res[0]:
             icm_intersect.append((res[0], res[1]))

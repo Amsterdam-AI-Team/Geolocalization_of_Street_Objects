@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 from PIL import Image
 import numpy as np
-import glob
+import zipfile
 import pandas as pd
 import os
 
@@ -115,6 +115,11 @@ def non_max_suppression(boxes, probs=None, overlap_thresh=0.3):
     return boxes[pick].astype("float")
 
 def main():
+    """
+    An example script on how to iterate over the images in a zip file 
+    and get predictions from Faster R-CNN. 
+    """
+
     cfg = get_cfg()
     cfg.merge_from_file(
         "detectron2/configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"
@@ -122,37 +127,41 @@ def main():
     cfg.OUTPUT_DIR = "model_output"
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model.pth")
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1 # Bicycle symbol
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.99
 
     predictor = DefaultPredictor(cfg)
 
+    # An example on how to use zipfile
+    zip_file = zipfile.ZipFile("datasets/panoramas/2019/row3/124300.0,487000.0,125500.0,483000.0.zip")
+
     rows_list = []
-    for i, myfile in enumerate(glob.glob("datasets/bicycle/val/*.jpg")):
-        myfile = str(myfile)
-        filename = myfile.split("/")[-1].split(".jpg")[0]
+    for name in zip_file.namelist():
+        if name.endswith('.jpg'):
+            filename = name.split("/")[-1].split(".jpg")[0]
 
-        im = cv2.imread(myfile)
-        outputs = predictor(im)
+            # Open the images with the openCV reader because BGR order is used in Detectron2
+            pic = zip_file.read(name)
+            im = cv2.imdecode(np.frombuffer(pic, np.uint8), 1)
 
-        all_instances = outputs['instances'].to('cpu')
-        boxes = all_instances.pred_boxes.tensor.numpy()
-        #scores = all_instances.scores.numpy()
+            all_instances = outputs['instances'].to('cpu')
+            boxes = all_instances.pred_boxes.tensor.numpy()
+            #scores = all_instances.scores.numpy()
 
-        # Use Soft-NMS
-        #bboxes_window = non_max_suppression(boxes, scores, 0.2)
+            # Use Soft-NMS
+            #bboxes_window = non_max_suppression(boxes, scores, 0.2)
 
-        for i in range(len(boxes)):
-            center_temp = (boxes[i][0] + boxes[i][2]) / 2
+            for i in range(len(boxes)):
+                center_temp = (boxes[i][0] + boxes[i][2]) / 2
 
-            # Save detection row by row
-            new_data = {'pano_id' : filename, 'center_bbox' : center_temp}
-            rows_list.append(new_data)
+                # Save detection row by row
+                new_data = {'pano_id' : filename, 'center_bbox' : center_temp}
+                rows_list.append(new_data)
 
-        # bboxes rounded to 1 decimal
-        #rounded_bboxes = [[np.round(float(i), 1) for i in nested] for nested in boxes]
+            # bboxes rounded to 1 decimal
+            #rounded_bboxes = [[np.round(float(i), 1) for i in nested] for nested in boxes]
 
-        # Draw predictions
-        #draw_bbox(myfile, rounded_bboxes, filename)
+            # Draw predictions
+            #draw_bbox(myfile, rounded_bboxes, filename)
 
     # Save this file
     df_output = pd.DataFrame(rows_list)
