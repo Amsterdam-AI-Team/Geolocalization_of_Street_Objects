@@ -36,6 +36,8 @@ def mask_image(image, mask):
 
 if __name__ == "__main__":
     # In project root run: PYTHONPATH=. python scripts/masking.py
+    # Panorama used in example is available at:
+    # https://api.data.amsterdam.nl/panorama/panoramas/TMX7316010203-001886_pano_0000_002013/
     mask = get_side_view_of_pano(4000, 2000, 252, 90)
     with Image.open('examples/panorama_4000.jpeg') as source_image:
         masked_image = mask_image(source_image, mask)
