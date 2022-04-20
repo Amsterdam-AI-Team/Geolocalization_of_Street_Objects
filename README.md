@@ -23,6 +23,25 @@ There are four other folders in the structure:
 
 ---
 
+## Installation
+#### Environment
+
+Use your tool of choice to create a Python virtual environment if so desired. The dependencies at the time of writing have been confirmed to work on Ubuntu 21.10 with Python 3.7.11.
+
+This tool has a dependency on GDAL. Please make sure that this library has been installed on your system, and that its version matches that of the Python dependency.
+
+#### From Source
+
+Clone the repository and use pip to install the dependencies.
+
+```bash
+$ git clone git@github.com:Computer-Vision-Team-Amsterdam/Geolocalization_of_Street_Objects.git
+
+# In your virtual environment
+$ pip install -r requirements.txt
+```
+---
+
 ## Pipeline
 #### Faster R-CNN object detection
 A pre-trained Faster R-CNN model is further fine-tuned on a dataset of panoramic images with annotated bicycle symbols. Along with the Faster R-CNN output of the predicted bicycle symbols, additional information is essential for the next step of the pipeline. This is performed by utilizing ([`./scripts/postprocessing.py`](./scripts/postprocessing.py)).
