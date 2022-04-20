@@ -23,7 +23,7 @@ def get_pano_location(pano_id):
     
     # WGS84 to RD conversion 
     point = ogr.Geometry(ogr.wkbPoint)
-    point.AddPoint(geom[0], geom[1])
+    point.AddPoint(max(geom), min(geom))
     
     source = osr.SpatialReference()
     source.ImportFromEPSG(4326)
@@ -50,7 +50,7 @@ def get_pano_data(pano_id):
         return
     
     # Get panoramic image from API
-    image_url = pano_data['_links']['equirectangular_small']['href']
+    image_url = pano_data['_links']['equirectangular_medium']['href']
     
     # Get heading
     heading = pano_data['heading']
