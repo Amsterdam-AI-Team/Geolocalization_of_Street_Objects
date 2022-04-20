@@ -5,6 +5,19 @@ from src.geometry import viewpoint_to_pixels
 
 
 def get_side_view_of_pano(image_width, image_height, heading, mask_degrees):
+    """
+    Generate mask to get the side view of a panorama image
+
+    Arguments:
+    image_width: int = Panorama image width in pixels
+    image_height: int = Panorama image height in pixels
+    heading: Number = Car heading in degrees
+    mask_degrees: Number = Mask size in degrees. The mask will be applied to the front and back of the image, meaning that a mask
+    of 180 degrees will obscure the entire image.
+
+    Returns:
+    npt.NDArray[(image_height, image_width, 3), bool]
+    """
     right_mask_min = heading + 90 - mask_degrees / 2
     right_mask_max = heading + 90 + mask_degrees / 2
     left_mask_min = heading - 90 - mask_degrees / 2
@@ -28,6 +41,16 @@ def get_side_view_of_pano(image_width, image_height, heading, mask_degrees):
 
 
 def mask_image(image, mask):
+    """
+    Applies supplied mask to supplied image
+
+    Arguments:
+    image: PIL.Image
+    mask: npt.NDArray[(~Shape), bool] where shape matches the image dimensions
+
+    Returns:
+    PIL.Image
+    """
     np_image = np.array(image)
     masked = np_image.copy()
     masked[mask] = 0
