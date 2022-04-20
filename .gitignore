@@ -1,2 +1,8 @@
-*.pyc 
+.idea
+*.csv
+*.jpg
+*.jpeg
+*.json
+*.png
+*.pyc
 .DS_Store
