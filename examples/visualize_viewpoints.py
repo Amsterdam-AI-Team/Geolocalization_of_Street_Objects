@@ -61,6 +61,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     bbox = [int(item)for item in args.bbox.split(',')]
+    bbox = [bbox[0], bbox[1], bbox[0] + bbox[2], bbox[1] + bbox[3]]
 
     # API calls
     panoramic_image, heading = get_pano_data(args.pano_id)
