@@ -16,15 +16,15 @@ This repo is a refactored version of https://github.com/Amsterdam-AI-Team/Geoloc
 Install the triangulation depedency:
 
 ```shell
-pip install -i https://test.pypi.org/simple/ triangulation
+pip install git+ssh://git@github.com/Computer-Vision-Team-Amsterdam/Geolocalization_of_Street_Objects.git@convert-and-package
 ```
 
 Use the triangulation algorithm to retrieve exact location of the desired object from a COCO predictions file
 :
 ```python
 from triangulation.triangulation import triangulate
-input_file = "coco_instances_results.json"
-output_file = "object_locations.csv"
+input_file = "data/coco_instances_results.json"
+output_file = "output/object_locations.csv"
 triangulate(input_file, output_file)
 ```
 
