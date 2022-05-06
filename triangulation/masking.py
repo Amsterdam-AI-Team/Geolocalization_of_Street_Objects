@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-from helpers import viewpoint_to_pixels
+from triangulation.helpers import viewpoint_to_pixels
 
 
 def get_side_view_of_pano(image_width, image_height, heading, mask_degrees):

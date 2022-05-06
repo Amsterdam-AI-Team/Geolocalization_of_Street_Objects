@@ -17,7 +17,7 @@ import numpy as np
 import json
 from tqdm import tqdm
 from scipy.cluster.hierarchy import linkage, fcluster
-from helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs
+from triangulation.helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs
 
 
 MAX_DST_CAM_OBJECT = 15  # Max distance from camera to objects (in meters)
