@@ -17,13 +17,9 @@ import numpy as np
 import json
 from tqdm import tqdm
 from scipy.cluster.hierarchy import linkage, fcluster
-
-from utils.api_request import get_pano_location
-from utils.geometry import euclidean_distance, pixel_to_viewpoint
-from utils.geometry import rd_to_wgs
+from helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs
 
 
-# Preset parameters
 MAX_DST_CAM_OBJECT = 15  # Max distance from camera to objects (in meters)
 MAX_CLUSTER_SIZE = 1  # Maximal size of clusters employed (in meters)
 
