@@ -1,3 +1,20 @@
+Metadata-Version: 2.1
+Name: triangulation
+Version: 0.0.1
+Summary: UNKNOWN
+Home-page: https://github.com/Computer-Vision-Team-Amsterdam/Geolocalization_of_Street_Objects/tree/convert-and-package
+Author: Laurenssam
+Author-email: author@example.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 ## Geospatial Localization from Panoramic Images
 
 A refactored Python implementation of the MRF-based triangulation procedure to estimate object geolocations from bounding box predictions on imagery, introduced in "Automatic Discovery and Geotagging of Objects from Street View Imagery" by V. A. Krylov, E. Kenny, R. Dahyot.
@@ -43,3 +60,4 @@ mask = get_side_view_of_pano(image_width, image_height, heading, mask_degrees)
         masked_image = mask_image(source_image, mask)
         masked_image.save("../examples/panorama_4000_masked.jpeg", "jpeg")
 ```
+
