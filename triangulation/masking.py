@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 
-from src.geometry import viewpoint_to_pixels
+from utils.geometry import viewpoint_to_pixels
 
 
 def get_side_view_of_pano(image_width, image_height, heading, mask_degrees):
@@ -62,6 +62,6 @@ if __name__ == "__main__":
     # Panorama used in example is available at:
     # https://api.data.amsterdam.nl/panorama/panoramas/TMX7316010203-001886_pano_0000_002013/
     mask = get_side_view_of_pano(4000, 2000, 252, 90)
-    with Image.open('examples/panorama_4000.jpeg') as source_image:
+    with Image.open('../examples/panorama_4000.jpeg') as source_image:
         masked_image = mask_image(source_image, mask)
-        masked_image.save("examples/panorama_4000_masked.jpeg", "jpeg")
+        masked_image.save("../examples/panorama_4000_masked.jpeg", "jpeg")

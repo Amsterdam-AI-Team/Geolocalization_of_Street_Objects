@@ -2,6 +2,7 @@ import requests
 import json
 from osgeo import ogr, osr
 
+
 def get_pano_location(pano_id):
     """
     Get the initial location coordinates of a panoramic image 
@@ -24,13 +25,13 @@ def get_pano_location(pano_id):
     # WGS84 to RD conversion 
     point = ogr.Geometry(ogr.wkbPoint)
     point.AddPoint(max(geom), min(geom))
-    
+    #
     source = osr.SpatialReference()
     source.ImportFromEPSG(4326)
-    
+
     target = osr.SpatialReference()
     target.ImportFromEPSG(28992)
-    
+
     transform = osr.CoordinateTransformation(source, target)
     point.Transform(transform)
 

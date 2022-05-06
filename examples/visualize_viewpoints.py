@@ -7,8 +7,8 @@ import requests
 from PIL import Image
 import numpy as np
 
-from src.api_request import get_pano_data
-from src.geometry import viewpoint_to_pixels
+from utils.api_request import get_pano_data
+from utils.geometry import viewpoint_to_pixels
 
 PANO_WIDTH = 2000 # pixels
 RED = (255,0,0)
@@ -49,7 +49,7 @@ def visualize_viewpoints_street_view(pano_url, bbox, center_bbox, heading):
 
     # Save the image
     img = Image.fromarray(np_image, "RGB")
-    img.save("examples/street_view.jpeg", "jpeg")
+    img.save("street_view.jpeg", "jpeg")
 
 if __name__ == '__main__':
     # Read command line arguments

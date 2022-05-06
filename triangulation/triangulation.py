@@ -11,18 +11,17 @@ detected objects are compact enough to be described by a single geotag.
 NOTE: Currently, we do not establish approximate camera-to-object distances.
 Therefore, only normalized locations (at 1m distance from camera) are used.
 """
-import os
-import os.path
 import time
-from math import radians, cos, sin, sqrt
+from math import radians, cos, sin
 import numpy as np
+import json
+from tqdm import tqdm
 from scipy.cluster.hierarchy import linkage, fcluster
 
-from src.geometry import euclidean_distance
+from utils.api_request import get_pano_location
+from utils.geometry import euclidean_distance, pixel_to_viewpoint
+from utils.geometry import rd_to_wgs
 
-# Input and output CSV files
-INPUT_FILE = "data/postprocessing_output/bicycle_symbols_example.csv"
-OUTPUT_FILE = "output/bicycle_symbols_example.csv"
 
 # Preset parameters
 MAX_DST_CAM_OBJECT = 15  # Max distance from camera to objects (in meters)
@@ -34,6 +33,7 @@ DEPTH_WEIGHT = 0.2  # weight alpha in Eq.(4)
 OBJECT_MULTIVIEW = 0.2  # weight beta in  Eq.(4)
 STANDALONE_PRICE = max(1 - DEPTH_WEIGHT - OBJECT_MULTIVIEW,
                       0)  # weight (1-alpha-beta) in Eq. (4)
+
 
 def intersection_point(object_1, object_2):
     """
@@ -122,7 +122,7 @@ def hierarchical_cluster(intersects, max_intra_degree_dst):
     return cluster_intersections
 
 
-def read_inputfile():
+def read_inputfile(input_file):
     """
     Read the input CSV file that defines a detected object by four values of
     type float: camera location RD-coordinates (X, Y), viewpoint from north
@@ -131,19 +131,17 @@ def read_inputfile():
     """
     objects_base = []
 
-    with open(INPUT_FILE, "r") as f:
-        next(f)  # skip the first line
-        for line in f:
-            nums = line.split(",")
-            if len(nums) < 3:
-                print("Broken entry ignored")
-                continue
-            if len(nums) < 4:  # if a depth estimate is not available
-                (x, y, viewpoint_to_object, depth) = (float(nums[0]),
-                                              float(nums[1]), float(nums[2]), 5)
-            else:
-                (x, y, viewpoint_to_object, depth) = (float(nums[0]),
-                                              float(nums[1]), float(nums[2]), float(nums[3]))
+    with open(input_file) as f:
+        for detected_instance in tqdm(json.load(f)):
+            pano_id = detected_instance['image_id'].replace(".jpg", "")
+
+            bounding_box = detected_instance['bbox']
+            img_width = detected_instance['segmentation']['size'][1]
+            x, y = get_pano_location(pano_id)
+            center_bbox_x = bounding_box[0] + (0.5 * bounding_box[2])
+            viewpoint_to_object = pixel_to_viewpoint(center_bbox_x, img_width)
+            depth = 5 # TODO: ADD DEPTH ESTIMATION
+
             if depth <= 0:
                 depth = 5
 
@@ -168,14 +166,13 @@ def read_inputfile():
             ))
 
     print("All detected objects: {0:d}".format(len(objects_base)))
-
     return objects_base
+
 
 def get_all_intersections(objects_base):
     """
     Get the RD-coordinates of the pairwise intersections
     """
-    intersections = []
     num_intersections = 0
     object_dst = np.zeros((len(objects_base), len(objects_base)))
     intersections = np.zeros((len(objects_base), len(objects_base), 2))
@@ -220,6 +217,7 @@ def get_all_intersections(objects_base):
     print("All admissible intersections: {0:d}".format(num_intersections))
 
     return object_dst, intersections
+
 
 def mrf_energy_minimization(object_dst, objects_base):
     """
@@ -288,6 +286,7 @@ def mrf_energy_minimization(object_dst, objects_base):
 
     return objects_connectivity
 
+
 def clustering(objects_base, objects_connectivity, intersects):
     """
     To obtain the final object configuration we perform clustering of MRF output in
@@ -310,25 +309,22 @@ def clustering(objects_base, objects_connectivity, intersects):
 
     return cluster_intersections
 
-def main():
+def convert_intersections_to_wgs_coords(intersections):
+    """Converts all points of interest from Rijksdriekhoek to wgs84 coordinates"""
+    for i in range(len(intersections)):
+        intersections[i][:2] = rd_to_wgs(intersections[i][:2] / intersections[i][2])
+    return intersections
+
+
+def triangulate(coco_file, output_file_name):
+    """
+    Finds all the points of interest from provided predictions in COCO format on panorama images,
+    outputs a csv file that lists all identified objects with their corresponding location
+    """
     start = time.time()
 
-    if not os.path.isfile(INPUT_FILE):
-        print("Input file not found. Aborting.")
-        return
-
-    try:
-        f = open(OUTPUT_FILE, "w")
-        f.close()
-    except IOError:
-        print("A file with the specified ouput name cannot be created. Aborting.")
-        return
-
-    if os.path.isfile(OUTPUT_FILE):
-        print("A file with the specified ouput name already exists.")
-
-    # Step 1: Read data from the input CSV file
-    objects_base = read_inputfile()
+    # Step 1: Read data from the input COCO file
+    objects_base = read_inputfile(coco_file)
 
     # Step 2: Get the location of intersections
     object_dst, intersections = get_all_intersections(objects_base)
@@ -339,14 +335,14 @@ def main():
     # Step 4: Cluster intersections
     cluster_intersections = clustering(objects_base, objects_connectivity, intersections)
 
+    cluster_intersections = convert_intersections_to_wgs_coords(cluster_intersections)
+
     # Write to the output file
     num_clusters = cluster_intersections.shape[0]
-    with open(OUTPUT_FILE, "w") as inter:
-        inter.write("x,y,score\n")
+    with open(output_file_name, "w") as inter:
+        inter.write("lat,lon,score\n")
         for i in range(num_clusters):
-            inter.write("{0:f},{1:f},{2:d}\n".format(cluster_intersections[i,0] /
-                cluster_intersections[i, 2], cluster_intersections[i, 1] /
-                cluster_intersections[i, 2], int(cluster_intersections[i, 2])))
+            inter.write("{0:f},{1:f},{2:d}\n".format(cluster_intersections[i,0] , cluster_intersections[i, 1], int(cluster_intersections[i, 2])))
 
     print("Number of output ICM clusters: {0:d}".format(num_clusters))
 
@@ -354,4 +350,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    input_file = "../data/coco_instances_results.json"
+    output_file = "../output/object_locations.csv"
+    triangulate(input_file, output_file)

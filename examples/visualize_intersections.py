@@ -8,10 +8,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from src.api_request import get_pano_location, get_pano_data
-from src.geometry import pixel_to_viewpoint
+from utils.api_request import get_pano_location, get_pano_data
+from utils.geometry import pixel_to_viewpoint
 
-PANO_WIDTH = 2000 # pixels
+PANO_WIDTH = 4000 # pixels
 
 def visualize_viewpoints_top_view(objects_base):
     """
@@ -60,7 +60,7 @@ def visualize_viewpoints_top_view(objects_base):
 
     # Save the image
     plt.grid()
-    plt.savefig("examples/top_view.jpeg", dpi=300)
+    plt.savefig("top_view.jpeg", dpi=300)
 
 if __name__ == '__main__':
     # Read command line arguments
