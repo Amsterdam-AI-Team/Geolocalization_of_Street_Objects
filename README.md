@@ -1,13 +1,14 @@
-Geospatial Localization from Panoramic Images
-
-This repo is a refactored version of https://github.com/Amsterdam-AI-Team/Geolocalization_of_Street_Objects and made available in a python package.
-
-The original author summaries the functionality as:
+## Geospatial Localization from Panoramic Images
 
 A refactored Python implementation of the MRF-based triangulation procedure to estimate object geolocations from bounding box predictions on imagery, introduced in "Automatic Discovery and Geotagging of Objects from Street View Imagery" by V. A. Krylov, E. Kenny, R. Dahyot.
 
+## References
+This repo is a refactored version of https://github.com/Amsterdam-AI-Team/Geolocalization_of_Street_Objects and made available in a python package.
 
----
+## Requirements
+
+- A recent version of Python 3. The project is being developed on Python 3.9, but should be compatible with some older minor versions.
+- This project uses [Poetry](https://python-poetry.org/) as its package manager.
 
 ## Getting started
 
