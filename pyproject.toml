@@ -5,7 +5,7 @@ description = ""
 authors = ["laurenssam <laurenssamson@hotmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7,<3.11"
 
 [tool.poetry.dev-dependencies]
 GDAL = "3.4.3"
