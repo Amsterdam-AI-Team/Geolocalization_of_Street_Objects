@@ -13,6 +13,10 @@ numpy = "1.21.6"
 Pillow = "9.1.0"
 scipy = "1.7.3"
 tqdm = "4.64.0"
+Shapely = "1.8.2"
+imantics = "0.1.12"
+pycocotools = "2.0.4"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
