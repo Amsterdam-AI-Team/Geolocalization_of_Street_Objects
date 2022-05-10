@@ -21,8 +21,10 @@ pip install git+ssh://git@github.com/Computer-Vision-Team-Amsterdam/Geolocalizat
 
 Use the triangulation algorithm to retrieve exact location of the desired object from a COCO predictions file
 :
+
 ```python
-from triangulation.triangulation import triangulate
+from triangulation.triangulate import triangulate
+
 input_file = "data/coco_instances_results.json"
 output_file = "output/object_locations.csv"
 triangulate(input_file, output_file)
