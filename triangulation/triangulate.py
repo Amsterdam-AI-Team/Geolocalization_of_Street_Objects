@@ -17,7 +17,14 @@ import numpy as np
 import json
 from tqdm import tqdm
 from scipy.cluster.hierarchy import linkage, fcluster
-from triangulation.helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs
+import pycocotools.mask as mask_util
+from imantics import Mask
+from shapely.geometry import Polygon
+from datetime import date
+
+
+from triangulation.helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs, \
+    get_panos_from_points_of_interest
 
 
 MAX_DST_CAM_OBJECT = 15  # Max distance from camera to objects (in meters)
@@ -130,12 +137,21 @@ def read_inputfile(input_file):
     with open(input_file) as f:
         for detected_instance in tqdm(json.load(f)):
             pano_id = detected_instance['image_id'].replace(".jpg", "")
-
-            bounding_box = detected_instance['bbox']
             img_width = detected_instance['segmentation']['size'][1]
+            segmentation_mask = mask_util.decode(detected_instance['segmentation'])
+            polygons = Mask(segmentation_mask).polygons()
+            areas = []
+            centroids = []
+            for polygon_points in polygons.points:
+                if len(polygon_points) < 3:
+                    continue
+                shapely_polygon = Polygon(polygon_points)
+                areas.append(shapely_polygon.area)
+                centroids.append(list(shapely_polygon.centroid.coords[0]))
+            center_x = sum([areas[i] * centroids[i][0] for i in range(len(areas))]) / sum(areas)
+            center_y = sum([areas[i] * centroids[i][1] for i in range(len(areas))]) / sum(areas)
             x, y = get_pano_location(pano_id)
-            center_bbox_x = bounding_box[0] + (0.5 * bounding_box[2])
-            viewpoint_to_object = pixel_to_viewpoint(center_bbox_x, img_width)
+            viewpoint_to_object = pixel_to_viewpoint(center_x, img_width)
             depth = 5 # TODO: ADD DEPTH ESTIMATION
 
             if depth <= 0:
@@ -306,7 +322,9 @@ def clustering(objects_base, objects_connectivity, intersects):
     return cluster_intersections
 
 def convert_intersections_to_wgs_coords(intersections):
-    """Converts all points of interest from Rijksdriekhoek to wgs84 coordinates"""
+    """
+    Converts all points of interest from Rijksdriekhoek to wgs84 coordinates
+    """
     for i in range(len(intersections)):
         intersections[i][:2] = rd_to_wgs(intersections[i][:2] / intersections[i][2])
     return intersections
@@ -336,9 +354,9 @@ def triangulate(coco_file, output_file_name):
     # Write to the output file
     num_clusters = cluster_intersections.shape[0]
     with open(output_file_name, "w") as inter:
-        inter.write("lat,lon,score\n")
+        inter.write("lat,lon\n")
         for i in range(num_clusters):
-            inter.write("{0:f},{1:f},{2:d}\n".format(cluster_intersections[i,0] , cluster_intersections[i, 1], int(cluster_intersections[i, 2])))
+            inter.write("{0:f},{1:f}\n".format(cluster_intersections[i,0] , cluster_intersections[i, 1]))
 
     print("Number of output ICM clusters: {0:d}".format(num_clusters))
 
@@ -349,3 +367,7 @@ if __name__ == "__main__":
     input_file = "../data/coco_instances_results.json"
     output_file = "../output/object_locations.csv"
     triangulate(input_file, output_file)
+    start_time = date(2021, 3, 17)
+    end_time = date(2021, 3, 18)
+    # Automatically creates a folder for you
+    get_panos_from_points_of_interest(output_file, "../output/Containers", end_time, start_time)
