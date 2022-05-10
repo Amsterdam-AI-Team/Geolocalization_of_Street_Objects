@@ -7,9 +7,6 @@ authors = ["laurenssam <laurenssamson@hotmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.7,<3.11"
 GDAL = "3.4.3"
-
-[tool.poetry.dev-dependencies]
-GDAL = "3.4.3"
 numpy = "1.21.6"
 Pillow = "9.1.0"
 scipy = "1.7.3"
@@ -17,6 +14,8 @@ tqdm = "4.64.0"
 Shapely = "1.8.2"
 imantics = "0.1.12"
 pycocotools = "2.0.4"
+
+[tool.poetry.dev-dependencies]
 
 
 [build-system]

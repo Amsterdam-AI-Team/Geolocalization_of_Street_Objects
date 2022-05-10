@@ -2,7 +2,7 @@
 name = "colorama"
 version = "0.4.4"
 description = "Cross-platform colored terminal text."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -10,7 +10,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "cycler"
 version = "0.11.0"
 description = "Composable style cycles"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -18,7 +18,7 @@ python-versions = ">=3.6"
 name = "fonttools"
 version = "4.33.3"
 description = "Tools to manipulate font files"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -51,7 +51,7 @@ numpy = ["numpy (>1.0.0)"]
 name = "imantics"
 version = "0.1.12"
 description = "Python package for managing image annotations"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7"
 
@@ -65,7 +65,7 @@ xmljson = "*"
 name = "kiwisolver"
 version = "1.4.2"
 description = "A fast implementation of the Cassowary constraint solver"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -76,7 +76,7 @@ typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
 name = "lxml"
 version = "4.8.0"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 
@@ -90,7 +90,7 @@ source = ["Cython (>=0.29.7)"]
 name = "matplotlib"
 version = "3.5.2"
 description = "Python plotting package"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -109,7 +109,7 @@ setuptools_scm = ">=4"
 name = "numpy"
 version = "1.21.6"
 description = "NumPy is the fundamental package for array computing with Python."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7,<3.11"
 
@@ -117,7 +117,7 @@ python-versions = ">=3.7,<3.11"
 name = "opencv-python"
 version = "4.5.5.64"
 description = "Wrapper package for OpenCV python bindings."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -133,7 +133,7 @@ numpy = [
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -144,7 +144,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 name = "pillow"
 version = "9.1.0"
 description = "Python Imaging Library (Fork)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -156,7 +156,7 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 name = "pycocotools"
 version = "2.0.4"
 description = "Official APIs for the MS-COCO dataset"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -168,7 +168,7 @@ numpy = "*"
 name = "pyparsing"
 version = "3.0.8"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.8"
 
@@ -179,7 +179,7 @@ diagrams = ["railroad-diagrams", "jinja2"]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
@@ -190,7 +190,7 @@ six = ">=1.5"
 name = "scipy"
 version = "1.7.3"
 description = "SciPy: Scientific Library for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7,<3.11"
 
@@ -201,7 +201,7 @@ numpy = ">=1.16.5,<1.23.0"
 name = "setuptools-scm"
 version = "6.4.2"
 description = "the blessed package to manage your versions by scm tags"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -217,7 +217,7 @@ toml = ["setuptools (>=42)"]
 name = "shapely"
 version = "1.8.2"
 description = "Geometric objects, predicates, and operations"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -230,7 +230,7 @@ vectorized = ["numpy"]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -238,7 +238,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -246,7 +246,7 @@ python-versions = ">=3.7"
 name = "tqdm"
 version = "4.64.0"
 description = "Fast, Extensible Progress Meter"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
 
@@ -263,7 +263,7 @@ telegram = ["requests"]
 name = "typing-extensions"
 version = "4.2.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -271,14 +271,14 @@ python-versions = ">=3.7"
 name = "xmljson"
 version = "0.2.1"
 description = "Converts XML into JSON/Python dicts/arrays and vice-versa."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7,<3.11"
-content-hash = "f7209b0ef7ecd8b4b23b77a603c8651505556066f91b908ab1745bd94c752591"
+content-hash = "e6613a16c0e4c7c01a13670c5eb15b186a55bc0fbc42daf1dbf52c835e084f29"
 
 [metadata.files]
 colorama = [
