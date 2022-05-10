@@ -6,6 +6,7 @@ authors = ["laurenssam <laurenssamson@hotmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7,<3.11"
+GDAL = "3.4.3"
 
 [tool.poetry.dev-dependencies]
 GDAL = "3.4.3"

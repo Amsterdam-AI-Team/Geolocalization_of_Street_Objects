@@ -40,7 +40,7 @@ woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
 name = "gdal"
 version = "3.4.3"
 description = "GDAL: Geospatial Data Abstraction Library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.0"
 
@@ -278,7 +278,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7,<3.11"
-content-hash = "94e69c41daab407b15e7528397d37454106d680ba65a501664b587daab22792a"
+content-hash = "f7209b0ef7ecd8b4b23b77a603c8651505556066f91b908ab1745bd94c752591"
 
 [metadata.files]
 colorama = [
