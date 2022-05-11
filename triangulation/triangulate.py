@@ -136,7 +136,7 @@ def read_inputfile(input_file):
 
     with open(input_file) as f:
         for detected_instance in tqdm(json.load(f)):
-            pano_id = detected_instance['image_id'].replace(".jpg", "")
+            pano_id = detected_instance['pano_id'].replace(".jpg", "")
             img_width = detected_instance['segmentation']['size'][1]
             segmentation_mask = mask_util.decode(detected_instance['segmentation'])
             polygons = Mask(segmentation_mask).polygons()
