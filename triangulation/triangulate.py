@@ -16,11 +16,13 @@ from math import radians, cos, sin
 import numpy as np
 import json
 from tqdm import tqdm
+from pathlib import Path
 from scipy.cluster.hierarchy import linkage, fcluster
 import pycocotools.mask as mask_util
 from imantics import Mask
 from shapely.geometry import Polygon
 from datetime import date
+from panorama.client import PanoramaClient
 
 
 from triangulation.helpers import get_pano_location, pixel_to_viewpoint, euclidean_distance, rd_to_wgs, \
@@ -370,4 +372,8 @@ if __name__ == "__main__":
     start_time = date(2021, 3, 17)
     end_time = date(2021, 3, 18)
     # Automatically creates a folder for you
-    get_panos_from_points_of_interest(output_file, "../output/Containers", end_time, start_time)
+    panoramas = get_panos_from_points_of_interest(output_file, end_time, start_time)
+    output_folder = Path("../output/Containers")
+    output_folder.mkdir(exist_ok=True)
+    for pano in panoramas:
+        PanoramaClient.download_image(pano)

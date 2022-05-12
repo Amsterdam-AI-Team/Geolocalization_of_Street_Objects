@@ -78,27 +78,22 @@ def get_pano_location(pano_id):
     return [point.GetX(), point.GetY()]
 
 
-def get_panos_from_points_of_interest(point_of_interest, output_folder, timestamp_before, timestamp_after):
+def get_panos_from_points_of_interest(point_of_interest, timestamp_before, timestamp_after):
     """
-    Downloads the panoramas that are closest to the points of interest
+    Get the panoramas that are closest to the points of interest
     Takes as input a csv file with lon, lat coordinates outputs images in the output folder
     """
-    if isinstance(output_folder, str):
-        output_folder = Path(output_folder)
-    output_folder.mkdir(exist_ok=True, parents=True)
-
+    panoramas = []
     with open(point_of_interest, 'r') as file:
         reader = csv.reader(file)
         next(reader) #skip first line
         for row in reader:
             location = models.LocationQuery(
-                latitude=float(row[0]), longitude=float(row[1]), radius=100
+                latitude=float(row[0]), longitude=float(row[1]), radius=25
             )
             query_result: models.PagedPanoramasResponse = PanoramaClient.list_panoramas(
                 location=location,
                 timestamp_after=timestamp_after,
                 timestamp_before=timestamp_before)
-
-            # Download the corresponding image to your machine
-            PanoramaClient.download_image(query_result.panoramas[0], output_location=output_folder,
-                                          size=models.ImageSize.MEDIUM)
+            panoramas.append(query_result.panoramas[0])
+    return panoramas
