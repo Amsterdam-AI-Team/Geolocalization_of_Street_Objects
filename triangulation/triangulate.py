@@ -376,4 +376,4 @@ if __name__ == "__main__":
     output_folder = Path("../output/Containers")
     output_folder.mkdir(exist_ok=True)
     for pano in panoramas:
-        PanoramaClient.download_image(pano)
+        PanoramaClient.download_image(pano, output_location=output_folder)
