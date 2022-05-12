@@ -16,7 +16,7 @@ This repo is a refactored version of https://github.com/Amsterdam-AI-Team/Geoloc
 Install Triangulation package:
 
 ```shell
-pip install git+ssh://git@github.com/Computer-Vision-Team-Amsterdam/Geolocalization_of_Street_Objects.git@convert-and-package
+pip install git+ssh://git@github.com/Computer-Vision-Team-Amsterdam/Geolocalization_of_Street_Objects.git
 ```
 
 Use the triangulation algorithm to retrieve exact location of the desired object from a COCO predictions file
