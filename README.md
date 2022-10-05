@@ -27,7 +27,8 @@ from triangulation.triangulate import triangulate
 
 input_file = "data/coco_instances_results.json"
 output_file = "output/object_locations.csv"
-triangulate(input_file, output_file)
+cluster_intersections = triangulate(input_file)
+write_output(output_file, cluster_intersections)
 ```
 
 There is also code to only get the side view of a panoramic image:
